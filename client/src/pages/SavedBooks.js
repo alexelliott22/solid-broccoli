@@ -8,15 +8,23 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
   const {loading, data} = useQuery(GET_ME);
-  const [removeBook, {error}] = useMutation(REMOVE_BOOK);
+  const [removeBook, {error}] = useMutation(REMOVE_BOOK, {
+    update(cache, {data: {removeBook}}) {
+      const {savedBooks} = cache.readQuery({query: GET_ME});
+
+      cache.writeQuery({
+        query: GET_ME,
+        data: {savedBooks: []}
+      })
+    }
+  });
   // if data isn't here yet, say so
   if (!loading) {
     return <h2>LOADING...</h2>;
   }
   
-  userData = data?.me || {};
+  const userData = data?.me || {};
   
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -28,7 +36,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await removeBook(bookId);
+      await removeBook({
+        variables: {bookId}
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');
