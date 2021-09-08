@@ -21,7 +21,7 @@
 ![Homepage](client/public/imgs/book-seo-3407.herokuapp.com_%20(1).png)
 
 ## My Books
-![my Books](client\public\imgs\book-seo-3407.herokuapp.com_%20(2).png)
+![my Books](client/public/imgs/book-seo-3407.herokuapp.com_%20(2).png)
 
 
   ## Questions 
